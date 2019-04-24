@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './slide.dart';
+import './list.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -51,6 +52,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   String title = '首页';
   List data = [];
+  List news = [];
 
   getData() async {
     var url = 'http://news-at.zhihu.com/api/4/stories/latest';
@@ -67,6 +69,7 @@ class HomePageState extends State<HomePage> {
 
     setState(() {
       this.data = data['top_stories'];
+      this.news = data['stories'];
       print(this.data);
     });
   }
@@ -106,7 +109,13 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: new Slide(data),
+      body: new Flex(
+        direction: Axis.vertical,
+        children: <Widget>[
+          new Slide(data),
+          new ListNews(news),
+        ],
+      ),
     );
   }
 }
